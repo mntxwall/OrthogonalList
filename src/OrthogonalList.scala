@@ -7,6 +7,10 @@ case class EdgeNode(var tailVertex: String, var headVertex: String,
   override def toString: String = {
     s"$tailVertex->$headVertex $tailNext $headNext"
   }
+
+  def simpleString: String = {
+    s"$tailVertex->$headVertex"
+  }
 }
 case class VertexNode(var data: String, var firstIn: EdgeNode, var firstOut: EdgeNode)
 
@@ -77,7 +81,7 @@ object OrthogonalList extends App {
     else x.headNext = y
   }
 
-  val insetEdge = (x: EdgeNode) => {
+  val insertEdge = (x: EdgeNode) => {
 
     val tailVertexIndex = x.tailVertex
     val headVertexIndex = x.headVertex
@@ -109,9 +113,28 @@ object OrthogonalList extends App {
 
   //
 
-  println(edgeList)
-  edgeList.foreach( insetEdge )
-  println(vertexNodeList)
+ // println(edgeList)
+  edgeList.foreach( insertEdge )
+  //println(vertexNodeList)
+
+  def findPath(startVertex: String, endVertex: String):Unit = {
+
+    if ( !startVertex.eq( endVertex )){
+      var tmp: EdgeNode = vertexNodeList(startVertex.toInt).firstOut
+      while(tmp != null){
+        println(tmp.simpleString)
+        findPath(tmp.headVertex, endVertex)
+        tmp = tmp.tailNext
+      }
+
+    }
+    else{
+      println("find return")
+    }
+  }
+
+
+  findPath("0", "4")
 
 
 }
