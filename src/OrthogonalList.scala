@@ -42,15 +42,15 @@ object OrthogonalList extends App {
 
   //How many edge in the graph
   val graphEdgeList: Array[GraphDescribe] = Array(
-    new GraphDescribe("0", "1", 1),
-    new GraphDescribe("0", "2", 12),
-    new GraphDescribe("1", "3", 3),
-    new GraphDescribe("1", "2", 9),
-    new GraphDescribe("2", "4", 5),
-    new GraphDescribe("3", "2", 4),
-    new GraphDescribe("3", "4", 13),
-    new GraphDescribe("3", "5", 15),
-    new GraphDescribe("4", "5", 4)
+     GraphDescribe("0", "1", 1),
+     GraphDescribe("0", "2", 12),
+     GraphDescribe("1", "3", 3),
+     GraphDescribe("1", "2", 9),
+     GraphDescribe("2", "4", 5),
+     GraphDescribe("3", "2", 4),
+     GraphDescribe("3", "4", 13),
+     GraphDescribe("3", "5", 15),
+     GraphDescribe("4", "5", 4)
   )
 
 
@@ -62,10 +62,10 @@ object OrthogonalList extends App {
 
   //make the vertexNodeList according to the Vertex node list
   graphVertexList.foreach( x =>
-    vertexNodeList += new VertexNode(x, null, null))
+    vertexNodeList +=  VertexNode(x, null, null))
 
   graphEdgeList.foreach( x =>
-    edgeList += new EdgeNode(x.tailVertex, x.headVertex, null, null, x.dateInfo))
+    edgeList +=  EdgeNode(x.tailVertex, x.headVertex, null, null, x.dateInfo))
 
 
   def insertTail ( x: EdgeNode,  y: EdgeNode):Unit = {
