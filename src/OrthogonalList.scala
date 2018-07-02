@@ -159,13 +159,17 @@ object OrthogonalList extends App {
   def findPathExt(startVertex: VertexNode, endVertex: VertexNode, weight: Int): Unit = {
     var a: Int = weight
 
-    if( !(startVertex.data).eq(endVertex.data)){
+    if( ! startVertex.data.eq(endVertex.data)){
 
       if(startVertex.firstOut != null) {
 
+        //val tmp: EdgeNode = vertexNodeList(startVertex.firstOut.headVertex.toInt)
         a += startVertex.firstOut.edgeInfo
         //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
-        findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, startVertex.firstOut.edgeInfo)
+
+        println(startVertex.firstOut.simpleString)
+        println(s"the weight is $a")
+        findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, a)
 
         //startVertex = startVertex.firstOut
       }
