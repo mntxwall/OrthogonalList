@@ -148,7 +148,7 @@ object OrthogonalList extends App {
     val startVertexNode: VertexNode = vertexNodeList(startVertex.toInt)
     val endVertexNode: VertexNode = vertexNodeList(endVertex.toInt)
 
-    findPathExt(startVertexNode, endVertexNode, 0)
+    findPathExt(startVertexNode, endVertexNode)
 
   }
 
@@ -156,28 +156,55 @@ object OrthogonalList extends App {
 
   //findPath("0", "4", 0)
 
-  def findPathExt(startVertex: VertexNode, endVertex: VertexNode, weight: Int): Unit = {
+  def findPathExt(startVertex: VertexNode, endVertex: VertexNode, weight: Int = 0): Unit = {
     var a: Int = weight
+
+    var tmp: EdgeNode = startVertex.firstOut
+
+    /*
+    while(tmp != null){
+
+      a += startVertex.firstOut.edgeInfo
+      //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
+
+      println(startVertex.firstOut.simpleString)
+      println(s"the weight is $a")
+      if( ! startVertex.data.eq(endVertex.data)){
+
+        findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
+      }
+
+      tmp = tmp.tailNext
+    }
+    */
+
+
 
     if( ! startVertex.data.eq(endVertex.data)){
 
-      if(startVertex.firstOut != null) {
 
+      //if(startVertex.firstOut != null) {
+      while(tmp != null){
         //val tmp: EdgeNode = vertexNodeList(startVertex.firstOut.headVertex.toInt)
-        a += startVertex.firstOut.edgeInfo
+        //findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, a)
+        a += tmp.edgeInfo
         //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
 
         println(startVertex.firstOut.simpleString)
         println(s"the weight is $a")
-        findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, a)
+        findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
+        a -= tmp.edgeInfo
+        tmp = tmp.tailNext
 
         //startVertex = startVertex.firstOut
       }
     }
     else
       resultList += a
+
   }
 
+  /*
   def findEdge(edge: EdgeNode, weight: Int, endVertexNode: String): Unit = {
 
     var a: Int = weight
@@ -193,8 +220,8 @@ object OrthogonalList extends App {
     }
 
   }
-
-  findPath("0", "4")
+*/
+  findPath("0", "2")
 
 
 
