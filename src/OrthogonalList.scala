@@ -1,4 +1,5 @@
 
+import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 case class EdgeNode(var tailVertex: String, var headVertex: String,
@@ -31,19 +32,11 @@ object OrthogonalList extends App {
 
   //How many vertex in the graph
   val graphVertexList: List[String] = List("0", "1", "2", "3", "4", "5")
-  /*
-  val vertexList: List[VertexNode] = List(
-    new VertexNode("0", null, null),
-    new VertexNode("1", null, null),
-    new VertexNode("2", null, null),
-    new VertexNode("3", null, null)
-
-  )*/
 
   //How many edge in the graph
   val graphEdgeList: Array[GraphDescribe] = Array(
      GraphDescribe("0", "1", 1),
-     GraphDescribe("0", "2", 12),
+     GraphDescribe("0", "2", 8),
      GraphDescribe("1", "3", 3),
      GraphDescribe("1", "2", 9),
      GraphDescribe("2", "4", 5),
@@ -116,69 +109,40 @@ object OrthogonalList extends App {
  // println(edgeList)
   edgeList.foreach( insertEdge )
   //println(vertexNodeList)
-/*
-  def findPath(startVertex: String, endVertex: String): Unit = {
 
-    //var a: Int = sumWeight;
-
-    if ( !startVertex.eq( endVertex )){
-      var tmp: EdgeNode = vertexNodeList(startVertex.toInt).firstOut
-      //var weight: Int = tmp.edgeInfo
-      //a += sumWeight
-
-      while(tmp != null){
-        println(tmp.simpleString)
-        //a += tmp.edgeInfo
-        //println(s"the weight is $a")
-        //findEdge(tmp)
-        //findPath(tmp.headVertex, endVertex)
-        //findEdge(tmp, tmp.edgeInfo)
-        tmp = tmp.tailNext
-      }
-
-    }
-    else{
-      println(s"find return")
-
-    }
-  }
-  */
+  var tmpPath: ArrayBuffer[String] = ArrayBuffer()
 
   def findPath(startVertex: String, endVertex: String): Unit = {
     val startVertexNode: VertexNode = vertexNodeList(startVertex.toInt)
     val endVertexNode: VertexNode = vertexNodeList(endVertex.toInt)
 
+    tmpPath += startVertex
     findPathExt(startVertexNode, endVertexNode)
 
   }
 
   val resultList: ArrayBuffer[Int] = ArrayBuffer()
+  //val resultVertexList: ArrayBuffer[String] = ArrayBuffer()
+
+
+
+  val b: ArrayBuffer[ArrayBuffer[String]] = ArrayBuffer()
+
+  var maxPathLength: Int = 0
+
+  val resultVertexList: ArrayBuffer[ArrayBuffer[String]] = ArrayBuffer()
+
+ // val resultHashMap: mutable.HashMap[ArrayBuffer, ]
 
   //findPath("0", "4", 0)
 
-  def findPathExt(startVertex: VertexNode, endVertex: VertexNode, weight: Int = 0): Unit = {
+  def findPathExt(startVertex: VertexNode, endVertex: VertexNode,
+                  weight: Int = 0): Unit = {
     var a: Int = weight
 
     var tmp: EdgeNode = startVertex.firstOut
 
-    /*
-    while(tmp != null){
-
-      a += startVertex.firstOut.edgeInfo
-      //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
-
-      println(startVertex.firstOut.simpleString)
-      println(s"the weight is $a")
-      if( ! startVertex.data.eq(endVertex.data)){
-
-        findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
-      }
-
-      tmp = tmp.tailNext
-    }
-    */
-
-
+    //var tmpPath: ArrayBuffer[String] = path
 
     if( ! startVertex.data.eq(endVertex.data)){
 
@@ -188,44 +152,40 @@ object OrthogonalList extends App {
         //val tmp: EdgeNode = vertexNodeList(startVertex.firstOut.headVertex.toInt)
         //findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, a)
         a += tmp.edgeInfo
+        tmpPath += tmp.headVertex
+        //resultVertexList += tmp.headVertex
         //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
 
         println(startVertex.firstOut.simpleString)
         println(s"the weight is $a")
         findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
         a -= tmp.edgeInfo
+        tmpPath -= tmp.headVertex
+        //resultVertexList -= tmp.headVertex
         tmp = tmp.tailNext
 
         //startVertex = startVertex.firstOut
       }
     }
-    else
-      resultList += a
-
-  }
-
-  /*
-  def findEdge(edge: EdgeNode, weight: Int, endVertexNode: String): Unit = {
-
-    var a: Int = weight
-
-    if(edge != null && !edge.headVertex.eq(endVertexNode)){
-
-      a += edge.edgeInfo
-      findEdge(edge.headNext, a, endVertexNode)
-    }
     else{
+      //resultList += a
 
-      resultList += a
+      //b += tmpPath.clone()
+
+      if(maxPathLength == 0 ||  maxPathLength >= a){
+        maxPathLength = a
+        resultVertexList += tmpPath.clone()
+      }
     }
 
+
   }
-*/
-  findPath("0", "2")
+  findPath("0", "4")
 
 
-
-  //println(resultList)
-  resultList.foreach(println)
+  //resultList.foreach(println)
+  //b.foreach(println)
+  println(maxPathLength)
+  resultVertexList.foreach(println)
 
 }
