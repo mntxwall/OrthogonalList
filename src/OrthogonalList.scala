@@ -109,7 +109,7 @@ object OrthogonalList extends App {
  // println(edgeList)
   edgeList.foreach( insertEdge )
   //println(vertexNodeList)
-
+  
   var tmpPath: ArrayBuffer[String] = ArrayBuffer()
 
   def findPath(startVertex: String, endVertex: String): Unit = {
@@ -121,15 +121,10 @@ object OrthogonalList extends App {
 
   }
 
-  val resultList: ArrayBuffer[Int] = ArrayBuffer()
-  //val resultVertexList: ArrayBuffer[String] = ArrayBuffer()
+  //val resultList: ArrayBuffer[Int] = ArrayBuffer()
 
-
-
-  val b: ArrayBuffer[ArrayBuffer[String]] = ArrayBuffer()
-
+  //store the resultPath
   var maxPathLength: Int = 0
-
   val resultVertexList: ArrayBuffer[ArrayBuffer[String]] = ArrayBuffer()
 
  // val resultHashMap: mutable.HashMap[ArrayBuffer, ]
