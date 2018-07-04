@@ -1,7 +1,19 @@
 
-import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable.ArrayBuffer
 
+/**
+  *Author MntCw
+  *Data 2018/7/1
+  *
+*/
+
+/*
+* 总体思路是使用十字链表建立图后
+* 遍例图，找到两个点间最小的距离
+*
+* */
+
+//十字链表中图的边的数据结构
 case class EdgeNode(var tailVertex: String, var headVertex: String,
                     var tailNext: EdgeNode, var headNext: EdgeNode,
                     var edgeInfo: Int = 0){
@@ -13,10 +25,10 @@ case class EdgeNode(var tailVertex: String, var headVertex: String,
     s"$tailVertex->$headVertex"
   }
 }
+//十字链表中图的顶点的数据结构
 case class VertexNode(var data: String, var firstIn: EdgeNode, var firstOut: EdgeNode)
 
 object OrthogonalList extends App {
-  println("HelloWorld!")
 
   case class GraphDescribe(var tailVertex: String, var headVertex: String, var dateInfo: Int = 0){
 
@@ -46,13 +58,6 @@ object OrthogonalList extends App {
      GraphDescribe("3", "5", 15),
      GraphDescribe("4", "5", 4)
   )
-
-
-  // val test = (x: GraphDescribe) => x.headVertex = "t"
-
-  //  graph.foreach(test)
-
-  // println(graph(1).headVertex)
 
   //make the vertexNodeList according to the Vertex node list
   graphVertexList.foreach( x =>
@@ -87,9 +92,6 @@ object OrthogonalList extends App {
       tailVertexNode.firstOut = x
     }
     else {
-      //var tempEdge: EdgeNode = tailVertexNode.firstOut
-      //while (tempEdge.tailNext != null) tempEdge = tempEdge.tailNext
-      //tempEdge.tailNext = x
       insertTail(tailVertexNode.firstOut, x)
     }
 
@@ -97,47 +99,32 @@ object OrthogonalList extends App {
       headVertexNode.firstIn = x
     }
     else {
-      //var tempEdge: EdgeNode = headVertexNode.firstIn
-      //while (tempEdge.headNext != null) tempEdge = tempEdge.headNext
-      //tempEdge.headNext = x
       insertHead(headVertexNode.firstIn, x)
     }
 
   }
 
-  //
-
- // println(edgeList)
   edgeList.foreach( insertEdge )
-  //println(vertexNodeList)
 
+  /*
+  * 存储遍历时经过的点，
+  * 用于判断是否有环和记录最后找到的结果
+  */
   var tmpPath: ArrayBuffer[String] = ArrayBuffer()
-  //val b: ArrayBuffer[String] = ArrayBuffer()
 
   def findPath(startVertex: String, endVertex: String): Unit = {
     val startVertexNode: VertexNode = vertexNodeList(startVertex.toInt)
     val endVertexNode: VertexNode = vertexNodeList(endVertex.toInt)
 
     tmpPath += startVertex
-
-    //b += startVertex
-
     findPathExt(startVertexNode, endVertexNode)
 
   }
-
-  //val resultList: ArrayBuffer[Int] = ArrayBuffer()
 
   //store the resultPath
   var maxPathLength: Int = 0
   val resultVertexList: ArrayBuffer[ArrayBuffer[String]] = ArrayBuffer()
 
-
-  //b.find(1)
-
- // val resultHashMap: mutable.HashMap[ArrayBuffer, ]
-
-  //findPath("0", "4", 0)
 
   def findPathExt(startVertex: VertexNode, endVertex: VertexNode,
                   weight: Int = 0): Unit = {
@@ -145,37 +132,22 @@ object OrthogonalList extends App {
 
     var tmp: EdgeNode = startVertex.firstOut
 
-    //var tmpPath: ArrayBuffer[String] = path
-
     if( ! startVertex.data.eq(endVertex.data)){
 
-
-      //if(startVertex.firstOut != null) {
       while(tmp != null && tmpPath.indexOf(tmp.headVertex) == -1){
-        //val tmp: EdgeNode = vertexNodeList(startVertex.firstOut.headVertex.toInt)
-        //findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, a)
           a += tmp.edgeInfo
           tmpPath += tmp.headVertex
-          //tmpPath.append(tmp.headVertex)
-          //resultVertexList += tmp.headVertex
-          //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
-
-          println(startVertex.firstOut.simpleString)
-          println(s"the weight is $a")
           findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
           a -= tmp.edgeInfo
           tmpPath -= tmp.headVertex
           tmp = tmp.tailNext
-
-        //startVertex = startVertex.firstOut
       }
     }
     else{
-      //resultList += a
-
-      //b += tmpPath.clone()
-
-      if(maxPathLength == 0 ||  maxPathLength >= a){
+      /*
+      * 找到路径后，对比保留最小
+      * */
+      if(  maxPathLength >= a || maxPathLength == 0){
         maxPathLength = a
         resultVertexList += tmpPath.clone()
       }
@@ -185,9 +157,6 @@ object OrthogonalList extends App {
   }
   findPath("0", "4")
 
-
-  //resultList.foreach(println)
-  //b.foreach(println)
   println(maxPathLength)
   resultVertexList.foreach(println)
 
