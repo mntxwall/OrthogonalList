@@ -39,6 +39,7 @@ object OrthogonalList extends App {
      GraphDescribe("0", "2", 8),
      GraphDescribe("1", "3", 3),
      GraphDescribe("1", "2", 9),
+     GraphDescribe("2", "1", 1),
      GraphDescribe("2", "4", 5),
      GraphDescribe("3", "2", 4),
      GraphDescribe("3", "4", 13),
@@ -109,14 +110,18 @@ object OrthogonalList extends App {
  // println(edgeList)
   edgeList.foreach( insertEdge )
   //println(vertexNodeList)
-  
+
   var tmpPath: ArrayBuffer[String] = ArrayBuffer()
+  //val b: ArrayBuffer[String] = ArrayBuffer()
 
   def findPath(startVertex: String, endVertex: String): Unit = {
     val startVertexNode: VertexNode = vertexNodeList(startVertex.toInt)
     val endVertexNode: VertexNode = vertexNodeList(endVertex.toInt)
 
     tmpPath += startVertex
+
+    //b += startVertex
+
     findPathExt(startVertexNode, endVertexNode)
 
   }
@@ -126,6 +131,9 @@ object OrthogonalList extends App {
   //store the resultPath
   var maxPathLength: Int = 0
   val resultVertexList: ArrayBuffer[ArrayBuffer[String]] = ArrayBuffer()
+
+
+  //b.find(1)
 
  // val resultHashMap: mutable.HashMap[ArrayBuffer, ]
 
@@ -143,21 +151,21 @@ object OrthogonalList extends App {
 
 
       //if(startVertex.firstOut != null) {
-      while(tmp != null){
+      while(tmp != null && tmpPath.indexOf(tmp.headVertex) == -1){
         //val tmp: EdgeNode = vertexNodeList(startVertex.firstOut.headVertex.toInt)
         //findPathExt(vertexNodeList(startVertex.firstOut.headVertex.toInt), endVertex, a)
-        a += tmp.edgeInfo
-        tmpPath += tmp.headVertex
-        //resultVertexList += tmp.headVertex
-        //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
+          a += tmp.edgeInfo
+          tmpPath += tmp.headVertex
+          //tmpPath.append(tmp.headVertex)
+          //resultVertexList += tmp.headVertex
+          //findEdge(startVertex.firstOut, startVertex.firstOut.edgeInfo, endVertex.data)
 
-        println(startVertex.firstOut.simpleString)
-        println(s"the weight is $a")
-        findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
-        a -= tmp.edgeInfo
-        tmpPath -= tmp.headVertex
-        //resultVertexList -= tmp.headVertex
-        tmp = tmp.tailNext
+          println(startVertex.firstOut.simpleString)
+          println(s"the weight is $a")
+          findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
+          a -= tmp.edgeInfo
+          tmpPath -= tmp.headVertex
+          tmp = tmp.tailNext
 
         //startVertex = startVertex.firstOut
       }
