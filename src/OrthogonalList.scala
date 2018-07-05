@@ -37,6 +37,8 @@ object OrthogonalList extends App {
     }
   }
 
+  val maxPathDepth: Int = 2
+
   //save the Vertex Node
   val vertexNodeList: ArrayBuffer[VertexNode] = ArrayBuffer()
 
@@ -127,31 +129,38 @@ object OrthogonalList extends App {
 
 
   def findPathExt(startVertex: VertexNode, endVertex: VertexNode,
-                  weight: Int = 0): Unit = {
+                  weight: Int = 0, depth:Int = 0): Unit = {
     var a: Int = weight
+
+    var b: Int = depth
 
     var tmp: EdgeNode = startVertex.firstOut
 
-    if( ! startVertex.data.eq(endVertex.data)){
+    if( b <= maxPathDepth){
+      if( ! startVertex.data.eq(endVertex.data)){
 
-      while(tmp != null && tmpPath.indexOf(tmp.headVertex) == -1){
+        while(tmp != null && tmpPath.indexOf(tmp.headVertex) == -1){
           a += tmp.edgeInfo
           tmpPath += tmp.headVertex
-          findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a)
+          b += 1
+          findPathExt(vertexNodeList(tmp.headVertex.toInt), endVertex, a, b)
           a -= tmp.edgeInfo
           tmpPath -= tmp.headVertex
+          b -= 1
           tmp = tmp.tailNext
+        }
+      }
+      else{
+        /*
+        * 找到路径后，对比保留最小
+        * */
+        if(  maxPathLength >= a || maxPathLength == 0){
+          maxPathLength = a
+          resultVertexList += tmpPath.clone()
+        }
       }
     }
-    else{
-      /*
-      * 找到路径后，对比保留最小
-      * */
-      if(  maxPathLength >= a || maxPathLength == 0){
-        maxPathLength = a
-        resultVertexList += tmpPath.clone()
-      }
-    }
+
 
 
   }
